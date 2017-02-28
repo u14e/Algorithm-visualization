@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import Sort from 'Sorts';
 import Utils from 'Utils';
 import 'app.scss';

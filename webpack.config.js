@@ -13,9 +13,10 @@ module.exports = {
         publicPath: '/dist',
     },
     module: {
-        rules: [
+        loaders: [
             {
                 test: /\.js$/,
+                exclude: /node_modules/,
                 use: [{
                     loader: 'babel-loader',
                     options: {
@@ -24,7 +25,7 @@ module.exports = {
                 }],
             }, {
                 test: /\.css$/,
-                /*use: [
+                use: [
                     'style-loader',
                     {
                         loader: 'css-loader',
@@ -32,10 +33,10 @@ module.exports = {
                             modules: true,
                         }
                     }
-                ]*/
-                loader:  ExtractTextPlugin.extract({
+                ]
+                /*loader:  ExtractTextPlugin.extract({
                     loader: 'css-loader?importLoaders=1',
-                }),
+                }),*/
             }, {
                 test: /\.(sass|scss)$/,
                 use: [
@@ -48,6 +49,10 @@ module.exports = {
     },
     resolve: {
         modules: [path.resolve(__dirname, './src'), 'node_modules'],
+        alias: {
+            Sorts: path.resolve(__dirname, './src/sorts/'),
+            Utils: path.resolve(__dirname, './src/utils/'),
+        }
     },
     plugins: [
         new ExtractTextPlugin({
@@ -55,6 +60,7 @@ module.exports = {
             allChunks: true,
         }),
     ],
+    devtool: 'source-map',
     devServer: {
         contentBase: path.resolve(__dirname, './src'),
     }

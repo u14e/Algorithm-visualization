@@ -3,25 +3,20 @@
     text-align: center;
 }
 
-#dashbord {
-    height: 400px;
+
+.queue-box {
     border: 1px solid rgba(0, 100, 0, .5);
-    margin-top: 10px;
+    margin: 10px 20px;
     padding: 10px 20px;
-    position: relative;
 
-    .queue-box {
-        position: absolute;
-        bottom: 10px;
-
-        span {
-            display: inline-block;
-            width: 15px;
-            border: 1px solid rgba(255, 0, 0, .8);
-            margin-right: 1px;
-            background-color: rgba(255, 0, 0, .5);
-            vertical-align: bottom;
-        }
+    span {
+        display: inline-block;
+        width: 10px;
+        border: 1px solid rgba(255, 0, 0, .8);
+        margin-right: 1px;
+        margin-top: 1px;
+        background-color: rgba(255, 0, 0, .5);
+        vertical-align: bottom;
     }
 }
     

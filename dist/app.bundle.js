@@ -391,7 +391,7 @@ exports.default = {
     bubbleSort: function bubbleSort(_ref) {
         var parent = _ref.parent,
             _ref$speed = _ref.speed,
-            speed = _ref$speed === undefined ? 100 : _ref$speed;
+            speed = _ref$speed === undefined ? 30 : _ref$speed;
 
         var queueNodes = parent.childNodes;
         var arr = [].concat(_toConsumableArray(queueNodes)).map(function (item) {
@@ -419,6 +419,52 @@ exports.default = {
             if (count < logs.length) {
                 tempElement = parent.removeChild(queueNodes[logs[count][1]]);
                 parent.insertBefore(tempElement, queueNodes[logs[count][0]]);
+                count++;
+            } else {
+                clearInterval(timer);
+            }
+        }, speed);
+    },
+    selectSort: function selectSort(_ref3) {
+        var parent = _ref3.parent,
+            _ref3$speed = _ref3.speed,
+            speed = _ref3$speed === undefined ? 30 : _ref3$speed;
+
+        var queueNodes = parent.childNodes;
+        var arr = [].concat(_toConsumableArray(queueNodes)).map(function (item) {
+            return +item.title;
+        }),
+            len = arr.length,
+            min = 0;
+        var tempRightElement = void 0,
+            tempLeftElement = void 0,
+            count = 0,
+            logs = [];
+
+        for (var i = 0; i < len; i++) {
+            min = i;
+
+            for (var j = i + 1; j < len; j++) {
+                if (arr[min] > arr[j]) {
+                    min = j;
+                }
+            }
+
+            if (i !== min) {
+                var _ref4 = [arr[min], arr[i]];
+                arr[i] = _ref4[0];
+                arr[min] = _ref4[1];
+
+                logs.push([i, min]);
+            }
+        }
+
+        var timer = setInterval(function () {
+            if (count < logs.length) {
+                tempRightElement = parent.removeChild(queueNodes[logs[count][1]]);
+                parent.insertBefore(tempRightElement, queueNodes[logs[count][0] + 1]);
+                tempLeftElement = parent.removeChild(queueNodes[logs[count][0]]);
+                parent.insertBefore(tempLeftElement, queueNodes[logs[count][1]]);
                 count++;
             } else {
                 clearInterval(timer);
@@ -519,7 +565,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "#operation {\n  margin: 20px;\n  text-align: center; }\n\n#dashbord {\n  height: 400px;\n  border: 1px solid rgba(0, 100, 0, 0.5);\n  margin-top: 10px;\n  padding: 10px 20px;\n  position: relative; }\n  #dashbord .queue-box {\n    position: absolute;\n    bottom: 10px; }\n    #dashbord .queue-box span {\n      display: inline-block;\n      width: 15px;\n      border: 1px solid rgba(255, 0, 0, 0.8);\n      margin-right: 1px;\n      background-color: rgba(255, 0, 0, 0.5);\n      vertical-align: bottom; }\n", ""]);
+exports.push([module.i, "#operation {\n  margin: 20px;\n  text-align: center; }\n\n.queue-box {\n  border: 1px solid rgba(0, 100, 0, 0.5);\n  margin: 10px 20px;\n  padding: 10px 20px; }\n  .queue-box span {\n    display: inline-block;\n    width: 10px;\n    border: 1px solid rgba(255, 0, 0, 0.8);\n    margin-right: 1px;\n    margin-top: 1px;\n    background-color: rgba(255, 0, 0, 0.5);\n    vertical-align: bottom; }\n", ""]);
 
 // exports
 
@@ -559,10 +605,11 @@ __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var randomArr = _Utils2.default.getRandomArray(50);
+var randomArr = _Utils2.default.getRandomArray(150);
 var box = document.querySelector('.queue-box'),
     queueNodes = box.childNodes;
-var btnSort = document.querySelector('#btn-sort'),
+var btnBubbleSort = document.querySelector('#btn-bubble-sort'),
+    btnSelectSort = document.querySelector('#btn-select-sort'),
     btnReset = document.querySelector('#btn-reset');
 
 function renderQueue(box, arr) {
@@ -580,8 +627,15 @@ function renderQueue(box, arr) {
 }
 
 function init() {
-    btnSort.addEventListener('click', function () {
+    btnBubbleSort.addEventListener('click', function () {
         _Sorts2.default.bubbleSort({
+            parent: box,
+            speed: 15
+        });
+    });
+
+    btnSelectSort.addEventListener('click', function () {
+        _Sorts2.default.selectSort({
             parent: box,
             speed: 30
         });

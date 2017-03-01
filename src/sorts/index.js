@@ -1,5 +1,5 @@
 export default {
-    bubbleSort({ parent, speed = 30 }) {
+    bubble({ parent, speed = 10 }) {
         let queueNodes = parent.childNodes;
         let arr = [...queueNodes].map(item =>
             +item.title
@@ -29,7 +29,7 @@ export default {
         }, speed);
     },
 
-    selectSort({ parent, speed = 30 }) {
+    select({ parent, speed = 50 }) {
         let queueNodes = parent.childNodes;
         let arr = [...queueNodes].map(item =>
             +item.title
@@ -68,4 +68,44 @@ export default {
             }
         }, speed);
     },
+
+    insert({ parent, speed = 50 }) {
+        let queueNodes = parent.childNodes;
+        let arr = [...queueNodes].map(item =>
+            +item.title
+        ),
+            len = arr.length;
+        let value,      // 当前比较的值
+            i,          // 未排序部分的当前位置
+            j,          // 已排序部分的当前位置
+            tempElement,
+            count = 0,
+            logs = [];
+        
+        for (i = 0; i < len; i++) {
+            value = arr[i];     // 保存当前位置的值
+
+            j = i -1;
+            while ( j >= 0 && arr[j] > value) {
+                arr[j+1] = arr[j];
+                j--;
+            }
+
+            arr[j+1] = value;
+
+            if (j !== i - 1) {  // 有移动时，push移动日志
+                logs.push([j+1, i]);
+            }
+        }
+
+        let timer = setInterval(() => {
+            if (count < logs.length) {
+                tempElement = parent.removeChild(queueNodes[ logs[count][1] ]);
+                parent.insertBefore(tempElement, queueNodes[ logs[count][0] ]);
+                count++;
+            } else {
+                clearInterval(timer);
+            }
+        }, speed);
+    }
 }

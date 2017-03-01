@@ -400,6 +400,7 @@ var box = document.querySelector('.queue-box'),
     queueNodes = box.childNodes;
 var btnBubbleSort = document.querySelector('#btn-bubble-sort'),
     btnSelectSort = document.querySelector('#btn-select-sort'),
+    btnInsertSort = document.querySelector('#btn-insert-sort'),
     btnReset = document.querySelector('#btn-reset');
 
 function renderQueue(box, arr) {
@@ -418,16 +419,23 @@ function renderQueue(box, arr) {
 
 function init() {
     btnBubbleSort.addEventListener('click', function () {
-        _Sorts2.default.bubbleSort({
+        _Sorts2.default.bubble({
             parent: box,
             speed: 15
         });
     });
 
     btnSelectSort.addEventListener('click', function () {
-        _Sorts2.default.selectSort({
+        _Sorts2.default.select({
             parent: box,
             speed: 30
+        });
+    });
+
+    btnInsertSort.addEventListener('click', function () {
+        _Sorts2.default.insert({
+            parent: box,
+            speed: 100
         });
     });
 
@@ -454,10 +462,10 @@ Object.defineProperty(exports, "__esModule", {
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 exports.default = {
-    bubbleSort: function bubbleSort(_ref) {
+    bubble: function bubble(_ref) {
         var parent = _ref.parent,
             _ref$speed = _ref.speed,
-            speed = _ref$speed === undefined ? 30 : _ref$speed;
+            speed = _ref$speed === undefined ? 10 : _ref$speed;
 
         var queueNodes = parent.childNodes;
         var arr = [].concat(_toConsumableArray(queueNodes)).map(function (item) {
@@ -491,10 +499,10 @@ exports.default = {
             }
         }, speed);
     },
-    selectSort: function selectSort(_ref3) {
+    select: function select(_ref3) {
         var parent = _ref3.parent,
             _ref3$speed = _ref3.speed,
-            speed = _ref3$speed === undefined ? 30 : _ref3$speed;
+            speed = _ref3$speed === undefined ? 50 : _ref3$speed;
 
         var queueNodes = parent.childNodes;
         var arr = [].concat(_toConsumableArray(queueNodes)).map(function (item) {
@@ -531,6 +539,53 @@ exports.default = {
                 parent.insertBefore(tempRightElement, queueNodes[logs[count][0] + 1]);
                 tempLeftElement = parent.removeChild(queueNodes[logs[count][0]]);
                 parent.insertBefore(tempLeftElement, queueNodes[logs[count][1]]);
+                count++;
+            } else {
+                clearInterval(timer);
+            }
+        }, speed);
+    },
+    insert: function insert(_ref5) {
+        var parent = _ref5.parent,
+            _ref5$speed = _ref5.speed,
+            speed = _ref5$speed === undefined ? 50 : _ref5$speed;
+
+        var queueNodes = parent.childNodes;
+        var arr = [].concat(_toConsumableArray(queueNodes)).map(function (item) {
+            return +item.title;
+        }),
+            len = arr.length;
+        var value = void 0,
+            // 当前比较的值
+        i = void 0,
+            // 未排序部分的当前位置
+        j = void 0,
+            // 已排序部分的当前位置
+        tempElement = void 0,
+            count = 0,
+            logs = [];
+
+        for (i = 0; i < len; i++) {
+            value = arr[i]; // 保存当前位置的值
+
+            j = i - 1;
+            while (j >= 0 && arr[j] > value) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+
+            arr[j + 1] = value;
+
+            if (j !== i - 1) {
+                // 有移动时，push移动日志
+                logs.push([j + 1, i]);
+            }
+        }
+
+        var timer = setInterval(function () {
+            if (count < logs.length) {
+                tempElement = parent.removeChild(queueNodes[logs[count][1]]);
+                parent.insertBefore(tempElement, queueNodes[logs[count][0]]);
                 count++;
             } else {
                 clearInterval(timer);

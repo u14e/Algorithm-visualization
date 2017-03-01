@@ -8,6 +8,7 @@ let box = document.querySelector('.queue-box'),
     queueNodes = box.childNodes;
 let btnBubbleSort = document.querySelector('#btn-bubble-sort'),
     btnSelectSort = document.querySelector('#btn-select-sort'),
+    btnInsertSort = document.querySelector('#btn-insert-sort'),
     btnReset = document.querySelector('#btn-reset');
 
 function renderQueue(box, arr) {
@@ -26,16 +27,23 @@ function renderQueue(box, arr) {
 
 function init() {
     btnBubbleSort.addEventListener('click', () => {
-        Sort.bubbleSort({
+        Sort.bubble({
             parent: box,
             speed: 15,
         });
     });
     
     btnSelectSort.addEventListener('click', () => {
-        Sort.selectSort({
+        Sort.select({
             parent: box,
             speed: 30,
+        })
+    })
+
+    btnInsertSort.addEventListener('click', () => {
+        Sort.insert({
+            parent: box,
+            speed: 100,
         })
     })
 

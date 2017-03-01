@@ -3,16 +3,20 @@ import Utils from 'Utils';
 import 'app.scss';
 import 'normalize.css';
 
-let randomArr = Utils.getRandomArray(150);
+let randomArr = Utils.getRandomArray(100);
 let box = document.querySelector('.queue-box'),
+    parent,     // 调用renderQueue时赋值为queue的父元素
     queueNodes = box.childNodes;
-let btnBubbleSort = document.querySelector('#btn-bubble-sort'),
+let opt = document.querySelector('#operation'),
+    btnBubbleSort = document.querySelector('#btn-bubble-sort'),
     btnSelectSort = document.querySelector('#btn-select-sort'),
     btnInsertSort = document.querySelector('#btn-insert-sort'),
-    btnReset = document.querySelector('#btn-reset');
+    btnReset = document.querySelector('#reset');
 
+// 插入多个元素，对DOM结构的开销比较大，先合并在parent节点，最后一次性插入
 function renderQueue(box, arr) {
     let span;
+    parent = document.createElement('div');
 
     box.innerHTML = '';
 
@@ -21,34 +25,26 @@ function renderQueue(box, arr) {
         span.title = item;
         span.style.height = item + 'px';
         span.className = 'queue-item';
-        box.appendChild(span);
+        parent.appendChild(span);
     })
+
+    box.appendChild(parent);
 }
 
 function init() {
-    btnBubbleSort.addEventListener('click', () => {
-        Sort.bubble({
-            parent: box,
-            speed: 15,
-        });
-    });
-    
-    btnSelectSort.addEventListener('click', () => {
-        Sort.select({
-            parent: box,
-            speed: 30,
-        })
-    })
-
-    btnInsertSort.addEventListener('click', () => {
-        Sort.insert({
-            parent: box,
-            speed: 100,
-        })
-    })
-
-    btnReset.addEventListener('click', () => {
-        renderQueue(box, randomArr);
+    opt.addEventListener('click', event => {
+        let e = event.target;
+        if (e.id) {
+            if (e.id.indexOf('sort') > -1) {
+                let type = e.id.split('-')[1];
+                Sort[type]({
+                    parent,
+                    speed: 10,
+                })
+            } else if (e.id === 'reset') {
+                renderQueue(box, randomArr);
+            }
+        }
     })
 
     renderQueue(box, randomArr);

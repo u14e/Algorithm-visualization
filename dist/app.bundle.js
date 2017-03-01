@@ -395,16 +395,21 @@ __webpack_require__(8);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var randomArr = _Utils2.default.getRandomArray(150);
+var randomArr = _Utils2.default.getRandomArray(100);
 var box = document.querySelector('.queue-box'),
-    queueNodes = box.childNodes;
-var btnBubbleSort = document.querySelector('#btn-bubble-sort'),
+    parent = void 0,
+    // 调用renderQueue时赋值为queue的父元素
+queueNodes = box.childNodes;
+var opt = document.querySelector('#operation'),
+    btnBubbleSort = document.querySelector('#btn-bubble-sort'),
     btnSelectSort = document.querySelector('#btn-select-sort'),
     btnInsertSort = document.querySelector('#btn-insert-sort'),
-    btnReset = document.querySelector('#btn-reset');
+    btnReset = document.querySelector('#reset');
 
+// 插入多个元素，对DOM结构的开销比较大，先合并在parent节点，最后一次性插入
 function renderQueue(box, arr) {
     var span = void 0;
+    parent = document.createElement('div');
 
     box.innerHTML = '';
 
@@ -413,34 +418,26 @@ function renderQueue(box, arr) {
         span.title = item;
         span.style.height = item + 'px';
         span.className = 'queue-item';
-        box.appendChild(span);
+        parent.appendChild(span);
     });
+
+    box.appendChild(parent);
 }
 
 function init() {
-    btnBubbleSort.addEventListener('click', function () {
-        _Sorts2.default.bubble({
-            parent: box,
-            speed: 15
-        });
-    });
-
-    btnSelectSort.addEventListener('click', function () {
-        _Sorts2.default.select({
-            parent: box,
-            speed: 30
-        });
-    });
-
-    btnInsertSort.addEventListener('click', function () {
-        _Sorts2.default.insert({
-            parent: box,
-            speed: 100
-        });
-    });
-
-    btnReset.addEventListener('click', function () {
-        renderQueue(box, randomArr);
+    opt.addEventListener('click', function (event) {
+        var e = event.target;
+        if (e.id) {
+            if (e.id.indexOf('sort') > -1) {
+                var type = e.id.split('-')[1];
+                _Sorts2.default[type]({
+                    parent: parent,
+                    speed: 10
+                });
+            } else if (e.id === 'reset') {
+                renderQueue(box, randomArr);
+            }
+        }
     });
 
     renderQueue(box, randomArr);
@@ -461,21 +458,34 @@ Object.defineProperty(exports, "__esModule", {
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
+var queueNodes = null,
+    arr = [],
+    len = 0;
+var count = 0,
+    // logs的索引
+logs = []; // 排序算法的每次循环指令都被push进来
+
+var clear = function clear() {
+    count = 0;
+    logs = [];
+};
+
+var init = function init(parent) {
+    queueNodes = parent.childNodes;
+    arr = [].concat(_toConsumableArray(queueNodes)).map(function (item) {
+        return +item.title;
+    });
+    len = arr.length;
+};
+
 exports.default = {
     bubble: function bubble(_ref) {
         var parent = _ref.parent,
             _ref$speed = _ref.speed,
             speed = _ref$speed === undefined ? 10 : _ref$speed;
 
-        var queueNodes = parent.childNodes;
-        var arr = [].concat(_toConsumableArray(queueNodes)).map(function (item) {
-            return +item.title;
-        }),
-            len = arr.length;
-        var tempElement = void 0,
-            count = 0,
-            // logs的索引
-        logs = []; // 排序算法的每次循环指令都被push进来
+        var tempElement = void 0;
+        init(parent);
 
         for (var i = 0; i < len - 1; i++) {
             for (var j = 0; j < len - i - 1; j++) {
@@ -496,6 +506,7 @@ exports.default = {
                 count++;
             } else {
                 clearInterval(timer);
+                clear();
             }
         }, speed);
     },
@@ -504,16 +515,10 @@ exports.default = {
             _ref3$speed = _ref3.speed,
             speed = _ref3$speed === undefined ? 50 : _ref3$speed;
 
-        var queueNodes = parent.childNodes;
-        var arr = [].concat(_toConsumableArray(queueNodes)).map(function (item) {
-            return +item.title;
-        }),
-            len = arr.length,
-            min = 0;
+        var min = 0;
         var tempRightElement = void 0,
-            tempLeftElement = void 0,
-            count = 0,
-            logs = [];
+            tempLeftElement = void 0;
+        init(parent);
 
         for (var i = 0; i < len; i++) {
             min = i;
@@ -542,6 +547,7 @@ exports.default = {
                 count++;
             } else {
                 clearInterval(timer);
+                clear();
             }
         }, speed);
     },
@@ -550,20 +556,14 @@ exports.default = {
             _ref5$speed = _ref5.speed,
             speed = _ref5$speed === undefined ? 50 : _ref5$speed;
 
-        var queueNodes = parent.childNodes;
-        var arr = [].concat(_toConsumableArray(queueNodes)).map(function (item) {
-            return +item.title;
-        }),
-            len = arr.length;
         var value = void 0,
             // 当前比较的值
         i = void 0,
             // 未排序部分的当前位置
         j = void 0,
             // 已排序部分的当前位置
-        tempElement = void 0,
-            count = 0,
-            logs = [];
+        tempElement = void 0;
+        init(parent);
 
         for (i = 0; i < len; i++) {
             value = arr[i]; // 保存当前位置的值
@@ -589,6 +589,7 @@ exports.default = {
                 count++;
             } else {
                 clearInterval(timer);
+                clear();
             }
         }, speed);
     }

@@ -1,14 +1,27 @@
+let queueNodes = null,
+    arr = [],
+    len = 0;
+let count = 0,      // logs的索引
+    logs = [];      // 排序算法的每次循环指令都被push进来
+
+let clear = () => {
+    count = 0;
+    logs = [];
+};
+
+let init = parent => {
+    queueNodes = parent.childNodes;
+    arr = [...queueNodes].map(item =>
+            +item.title
+        );
+    len = arr.length;
+}
+
 export default {
     bubble({ parent, speed = 10 }) {
-        let queueNodes = parent.childNodes;
-        let arr = [...queueNodes].map(item =>
-            +item.title
-        ),
-            len = arr.length;
-        let tempElement,
-            count = 0,      // logs的索引
-            logs = [];      // 排序算法的每次循环指令都被push进来
-        
+        let tempElement;
+        init(parent);
+
         for (let i = 0; i < len - 1; i++) {
             for (let j = 0; j < len - i - 1; j++) {
                 if (arr[j] > arr[j + 1]) {
@@ -25,21 +38,16 @@ export default {
                 count++;
             } else {
                 clearInterval(timer);
+                clear();
             }
         }, speed);
     },
 
     select({ parent, speed = 50 }) {
-        let queueNodes = parent.childNodes;
-        let arr = [...queueNodes].map(item =>
-            +item.title
-        ),
-            len = arr.length,
-            min = 0;
+        let min = 0;
         let tempRightElement,
-            tempLeftElement,
-            count = 0,
-            logs = [];
+            tempLeftElement;
+        init(parent);
 
         for (let i = 0; i < len; i++) {
             min = i;
@@ -65,22 +73,17 @@ export default {
                 count++;
             } else {
                 clearInterval(timer);
+                clear();
             }
         }, speed);
     },
 
     insert({ parent, speed = 50 }) {
-        let queueNodes = parent.childNodes;
-        let arr = [...queueNodes].map(item =>
-            +item.title
-        ),
-            len = arr.length;
         let value,      // 当前比较的值
             i,          // 未排序部分的当前位置
             j,          // 已排序部分的当前位置
-            tempElement,
-            count = 0,
-            logs = [];
+            tempElement;
+        init(parent);
         
         for (i = 0; i < len; i++) {
             value = arr[i];     // 保存当前位置的值
@@ -105,6 +108,7 @@ export default {
                 count++;
             } else {
                 clearInterval(timer);
+                clear();
             }
         }, speed);
     }

@@ -12,12 +12,24 @@
     <noscript>
         <h3 style="text-align: center; margin: 200px;">请启用浏览器脚本</h3>
     </noscript>
+
+    <form id="setting">
+        <label>样本量(10-200)：</label>
+        <input type="text" id="total">
+        <label>排序速度(10-100)：</label>
+        <input type="text" id="speed">
+        <button id="btn-setting">配置</button>
+        <div class="error"></div>
+    </form>
+
     <div class="queue-box"></div>
+
     <div id="operation">
         <button id="btn-bubble-sort">冒泡排序</button>
         <button id="btn-select-sort">选择排序</button>
         <button id="btn-insert-sort">插入排序</button>
         <button id="reset">重置</button>
+        <p class="tip"></p>
     </div>
     <script src="//cdn.bootcss.com/babel-polyfill/6.23.0/polyfill.min.js"></script>
     <script src="dist/app.bundle.js"></script>

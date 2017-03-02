@@ -1,6 +1,17 @@
+@import './utils/index';
+
+* {
+    box-sizing: border-box;
+}
+
 #operation {
     margin: 20px;
     text-align: center;
+
+    .tip {
+        color: rgba(0, 125, 125, .8);
+        margin: 10px 0;
+    }
 }
 
 
@@ -19,5 +30,30 @@
         vertical-align: bottom;
     }
 }
-    
-    
+
+#setting {
+    padding: 20px 20px 0;
+
+    label {
+        margin-left: 10px;
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+    input[type="text"] {
+        display: inline-block;
+        width: 80px;
+        height: 34px;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        color: #555;
+        background-color: #fff;
+    }
+
+    .error {
+        color: rgba(255, 0, 0, .8);
+        margin: 10px 0;
+    }
+
+}

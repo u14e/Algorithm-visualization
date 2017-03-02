@@ -6,12 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 </head>
 <body>
+    <form id="setting">
+        <label>样本量(10-200)：</label>
+        <input type="text" id="total">
+        <label>排序速度(10-100)：</label>
+        <input type="text" id="speed">
+        <button id="btn-setting">配置</button>
+        <div class="error"></div>
+    </form>
+
     <div class="queue-box"></div>
+
     <div id="operation">
         <button id="btn-bubble-sort">冒泡排序</button>
         <button id="btn-select-sort">选择排序</button>
         <button id="btn-insert-sort">插入排序</button>
         <button id="reset">重置</button>
+        <p class="tip"></p>
     </div>
     <script src="/dist/app.bundle.js"></script>
 </body>

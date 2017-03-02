@@ -18,7 +18,7 @@ let init = parent => {
 }
 
 export default {
-    bubble({ parent, speed = 10 }) {
+    bubble({ parent, speed = 10, cb = () => {} }) {
         let tempElement;
         init(parent);
 
@@ -39,11 +39,12 @@ export default {
             } else {
                 clearInterval(timer);
                 clear();
+                cb();
             }
         }, speed);
     },
 
-    select({ parent, speed = 50 }) {
+    select({ parent, speed = 50, cb = () => {} }) {
         let min = 0;
         let tempRightElement,
             tempLeftElement;
@@ -74,11 +75,12 @@ export default {
             } else {
                 clearInterval(timer);
                 clear();
+                cb();
             }
         }, speed);
     },
 
-    insert({ parent, speed = 50 }) {
+    insert({ parent, speed = 50, cb = () => {}  }) {
         let value,      // 当前比较的值
             i,          // 未排序部分的当前位置
             j,          // 已排序部分的当前位置
@@ -109,6 +111,7 @@ export default {
             } else {
                 clearInterval(timer);
                 clear();
+                cb();
             }
         }, speed);
     }

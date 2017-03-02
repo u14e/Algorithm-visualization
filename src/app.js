@@ -70,22 +70,27 @@ function init() {
             }, 1000);
         }
         let nodeTotal = document.querySelector('#total'),
-            total = +nodeTotal.value.trim(),
+            total = nodeTotal.value.trim(),
             nodeSpeed = document.querySelector('#speed');
-        speed = +nodeSpeed.value.trim();
+        speed = nodeSpeed.value.trim();
         if(total && speed) {
+            if(total.indexOf('.') > -1 || speed.indexOf('.') > -1 || !+total || !+speed) {
+                return settingError.textContent = '请填写整数';
+            }
+            total = +total;
+            speed = +speed;
             if(!(total >= 10 && total <= 200)) {
-                settingError.textContent = '样本量为10-200的整数';
+                return settingError.textContent = '样本量为10-200的整数';
             }
             if(!(speed >= 10 && speed <= 100)) {
-                settingError.textContent = '速度为10-100的整数';
+                return settingError.textContent = '速度为10-100的整数';
             }
 
             settingError.textContent = '';
             randomArr = Utils.getRandomArray(total);
             renderQueue(box, randomArr);
         } else {
-            settingError.textContent = '参数必须填写完整';
+            settingError.textContent = '参数必须填写完整, 且为整数';
         }
     })
 

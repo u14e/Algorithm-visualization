@@ -399,13 +399,18 @@ var randomArr = _Utils2.default.getRandomArray(100);
 var box = document.querySelector('.queue-box'),
     parent = void 0,
     // 调用renderQueue时赋值为queue的父元素
-speed = 50,
-    queueNodes = box.childNodes;
+queueNodes = box.childNodes;
 var opt = document.querySelector('#operation'),
     optTip = document.querySelector('.tip'),
     setting = document.querySelector('#btn-setting'),
     formSetting = document.querySelector('#setting'),
     settingError = formSetting.querySelector('.error');
+var nodeTotal = document.querySelector('#total'),
+    nodeSpeed = document.querySelector('#speed');
+var params = { // 配置的参数
+    speed: 50,
+    total: 100
+};
 var sorting = false;
 
 // 插入多个元素，对DOM结构的开销比较大，先合并在parent节点，最后一次性插入
@@ -437,7 +442,7 @@ function init() {
                     sorting = true;
                     _Sorts2.default[type]({
                         parent: parent,
-                        speed: speed,
+                        speed: params.speed,
                         cb: function cb() {
                             sorting = false;
                         }
@@ -462,10 +467,9 @@ function init() {
                 settingError.textContent = '';
             }, 1000);
         }
-        var nodeTotal = document.querySelector('#total'),
-            total = nodeTotal.value.trim(),
-            nodeSpeed = document.querySelector('#speed');
-        speed = nodeSpeed.value.trim();
+
+        var total = nodeTotal.value.trim(),
+            speed = nodeSpeed.value.trim();
         if (total && speed) {
             if (total.indexOf('.') > -1 || speed.indexOf('.') > -1 || !+total || !+speed) {
                 return settingError.textContent = '请填写整数';
@@ -479,6 +483,7 @@ function init() {
                 return settingError.textContent = '速度为10-100的整数';
             }
 
+            params = Object.assign({}, { speed: speed, total: total });
             settingError.textContent = '';
             randomArr = _Utils2.default.getRandomArray(total);
             renderQueue(box, randomArr);
@@ -510,7 +515,7 @@ var queueNodes = null,
     len = 0;
 var count = 0,
     // logs的索引
-logs = []; // 排序算法的每次循环指令都被push进来
+logs = []; // 排序算法的节点改变指令都被push进来
 
 var clear = function clear() {
     count = 0;

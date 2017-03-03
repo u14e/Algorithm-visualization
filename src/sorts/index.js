@@ -2,7 +2,7 @@ let queueNodes = null,
     arr = [],
     len = 0;
 let count = 0,      // logs的索引
-    logs = [];      // 排序算法的每次循环指令都被push进来
+    logs = [];      // 排序算法的节点改变指令都被push进来
 
 let clear = () => {
     count = 0;

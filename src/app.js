@@ -6,13 +6,18 @@ import 'normalize.css';
 let randomArr = Utils.getRandomArray(100);
 let box = document.querySelector('.queue-box'),
     parent,     // 调用renderQueue时赋值为queue的父元素
-    speed = 50,
     queueNodes = box.childNodes;
 let opt = document.querySelector('#operation'),
     optTip = document.querySelector('.tip'),
     setting = document.querySelector('#btn-setting'),
     formSetting = document.querySelector('#setting'),
     settingError = formSetting.querySelector('.error');
+let nodeTotal = document.querySelector('#total'),
+    nodeSpeed = document.querySelector('#speed');
+let params = {      // 配置的参数
+    speed: 50,
+    total: 100,
+};
 let sorting = false;
 
 // 插入多个元素，对DOM结构的开销比较大，先合并在parent节点，最后一次性插入
@@ -44,11 +49,11 @@ function init() {
                     sorting = true;
                     Sort[type]({
                         parent,
-                        speed,
+                        speed: params.speed,
                         cb: () => {
                             sorting = false;
                         }
-                    })
+                    });
                 } else if (e.id === 'reset') {
                     renderQueue(box, randomArr);
                 }
@@ -69,10 +74,9 @@ function init() {
                 settingError.textContent = '';
             }, 1000);
         }
-        let nodeTotal = document.querySelector('#total'),
-            total = nodeTotal.value.trim(),
-            nodeSpeed = document.querySelector('#speed');
-        speed = nodeSpeed.value.trim();
+        
+        let total = nodeTotal.value.trim(),
+            speed = nodeSpeed.value.trim();
         if(total && speed) {
             if(total.indexOf('.') > -1 || speed.indexOf('.') > -1 || !+total || !+speed) {
                 return settingError.textContent = '请填写整数';
@@ -86,6 +90,7 @@ function init() {
                 return settingError.textContent = '速度为10-100的整数';
             }
 
+            params = Object.assign({}, { speed, total });
             settingError.textContent = '';
             randomArr = Utils.getRandomArray(total);
             renderQueue(box, randomArr);
